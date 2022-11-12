@@ -4,8 +4,8 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_restful import Resource, Api, reqparse
 from flask_wtf import csrf
-from flask_jwt_extended import create_access_token
-from flask_jwt_extended import JWTManager
+from flask_jwt_extended import JWTManager, create_access_token, jwt_required
+
 
 app = Flask(__name__)
 app.secret_key = 'my_secret_key'
@@ -123,6 +123,11 @@ api.add_resource(UserApi, '/user/<int:user_id>')
 @app.route('/')
 def hello_world():
     return "Hello Flask framework" 
+
+@app.route('/admin')
+@jwt_required()
+def admin():
+    return "This is my admin dashboard" 
 
 if __name__ == '__main__':
     app.run(debug=True)
