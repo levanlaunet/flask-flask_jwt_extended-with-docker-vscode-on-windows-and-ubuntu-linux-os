@@ -1,0 +1,38 @@
+version: '3.7'
+services:
+  db:
+    image: postgres
+    volumes:
+      - ./data/db:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_DB=your_db
+      - POSTGRES_USER=your_user
+      - POSTGRES_PASSWORD=your_password
+    ports:
+      - "5431:5432"    
+  pgadmin:
+    image: dpage/pgadmin4
+    depends_on:
+      - db
+    ports:
+      - "85:80"
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=admin@gmail.com
+      - PGADMIN_DEFAULT_PASSWORD=your_password_admin
+    restart: unless-stopped
+  web:         
+    build: 
+      context: .
+    command: sh -c "python -m flask run --host=0.0.0.0"
+    container_name: mywebsite
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./app:/app 
+    depends_on:
+      - db
+    environment:
+      - DB_HOST=db
+      - DB_NAME=your_db
+      - DB_USER=your_user
+      - DB_PASS=your_password

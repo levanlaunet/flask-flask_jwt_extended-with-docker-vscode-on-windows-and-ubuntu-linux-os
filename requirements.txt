@@ -1,0 +1,7 @@
+Flask
+Flask-SQLAlchemy
+psycopg2-binary>=2.8
+Flask-Migrate
+flask-restful
+Flask-WTF
+flask-jwt-extended
